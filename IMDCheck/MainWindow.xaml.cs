@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -25,207 +26,101 @@ namespace IMDCheck
             InitializeComponent();
         }
 
-        private void F1Button_Clicked(object sender, RoutedEventArgs e)
+        public class FreqSet
         {
-            if((bool)f1Button.IsChecked)
-                MessageBox.Show("Test F1 Checked", "Test");
-            else
-                MessageBox.Show("Test F1 Unchecked", "Test");
+            public int freq1 { get; set; }
+            public int freq2 { get; set; }
+            public int lowerFreq { get; set; }
+            public int upperFreq { get; set; }
         }
 
-        private void F2Button_Clicked(object sender, RoutedEventArgs e)
-        {
+        List<int> checkedButtons = new List<int>();
+        List<FreqSet> interferedFreq = new List<FreqSet>();
 
+        private void ToggleButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            ToggleButton button = sender as ToggleButton;
+            BuildButtonList();
+            CalcInterference();
+
+            troubleFreqs.Text = "";
+
+            foreach (FreqSet freqs in interferedFreq)
+            {
+                troubleFreqs.Text += freqs.freq1 + "\t";
+                troubleFreqs.Text += freqs.freq2 + "\t";
+                troubleFreqs.Text += freqs.lowerFreq + "\t";
+                troubleFreqs.Text += freqs.upperFreq + System.Environment.NewLine;
+            }
         }
 
-        private void F3Button_Clicked(object sender, RoutedEventArgs e)
+        private void CalcInterference()
         {
+            checkedButtons.Sort();
+            interferedFreq.Clear();
 
+            for (int freq = 0; freq < checkedButtons.Count(); freq++)
+            {
+                for (int subSearch = freq; subSearch < checkedButtons.Count() - 1; subSearch++)
+                {
+                    int freq1 = checkedButtons[subSearch];
+                    int freq2 = checkedButtons[subSearch + 1];
+                    int differFreq = freq2 - freq1;
+                    int lowerFreq = freq1 - differFreq;
+                    int upperFreq = freq2 + differFreq;
+                    interferedFreq.Add(new FreqSet() { freq1 = freq1, freq2 = freq2, lowerFreq = lowerFreq, upperFreq = upperFreq });
+                }
+            }
         }
-
-        private void F4Button_Clicked(object sender, RoutedEventArgs e)
+ 
+        private void BuildButtonList()
         {
-
-        }
-
-        private void F5Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void F6Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void F7Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void F8Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B1Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B2Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B3Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B4Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B5Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B6Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B7Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void B8Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A1Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A2Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A3Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A4Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A5Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A6Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A7Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void A8Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E1Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E2Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E3Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E4Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E5Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E6Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E7Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void E8Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R1Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R2Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R3Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R4Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R5Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R6Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R7Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void R8Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
+            checkedButtons.Clear();
+
+            if ((bool)f1Button.IsChecked) checkedButtons.Add(int.Parse(f1Button.Content.ToString()));
+            if ((bool)f2Button.IsChecked) checkedButtons.Add(int.Parse(f2Button.Content.ToString()));
+            if ((bool)f3Button.IsChecked) checkedButtons.Add(int.Parse(f3Button.Content.ToString()));
+            if ((bool)f4Button.IsChecked) checkedButtons.Add(int.Parse(f4Button.Content.ToString()));
+            if ((bool)f5Button.IsChecked) checkedButtons.Add(int.Parse(f5Button.Content.ToString()));
+            if ((bool)f6Button.IsChecked) checkedButtons.Add(int.Parse(f6Button.Content.ToString()));
+            if ((bool)f7Button.IsChecked) checkedButtons.Add(int.Parse(f7Button.Content.ToString()));
+            if ((bool)f8Button.IsChecked) checkedButtons.Add(int.Parse(f8Button.Content.ToString()));
+
+            if ((bool)b1Button.IsChecked) checkedButtons.Add(int.Parse(b1Button.Content.ToString()));
+            if ((bool)b2Button.IsChecked) checkedButtons.Add(int.Parse(b2Button.Content.ToString()));
+            if ((bool)b3Button.IsChecked) checkedButtons.Add(int.Parse(b3Button.Content.ToString()));
+            if ((bool)b4Button.IsChecked) checkedButtons.Add(int.Parse(b4Button.Content.ToString()));
+            if ((bool)b5Button.IsChecked) checkedButtons.Add(int.Parse(b5Button.Content.ToString()));
+            if ((bool)b6Button.IsChecked) checkedButtons.Add(int.Parse(b6Button.Content.ToString()));
+            if ((bool)b7Button.IsChecked) checkedButtons.Add(int.Parse(b7Button.Content.ToString()));
+            if ((bool)b8Button.IsChecked) checkedButtons.Add(int.Parse(b8Button.Content.ToString()));
+
+            if ((bool)a1Button.IsChecked) checkedButtons.Add(int.Parse(a1Button.Content.ToString()));
+            if ((bool)a2Button.IsChecked) checkedButtons.Add(int.Parse(a2Button.Content.ToString()));
+            if ((bool)a3Button.IsChecked) checkedButtons.Add(int.Parse(a3Button.Content.ToString()));
+            if ((bool)a4Button.IsChecked) checkedButtons.Add(int.Parse(a4Button.Content.ToString()));
+            if ((bool)a5Button.IsChecked) checkedButtons.Add(int.Parse(a5Button.Content.ToString()));
+            if ((bool)a6Button.IsChecked) checkedButtons.Add(int.Parse(a6Button.Content.ToString()));
+            if ((bool)a7Button.IsChecked) checkedButtons.Add(int.Parse(a7Button.Content.ToString()));
+            if ((bool)a8Button.IsChecked) checkedButtons.Add(int.Parse(a8Button.Content.ToString()));
+
+            if ((bool)e1Button.IsChecked) checkedButtons.Add(int.Parse(e1Button.Content.ToString()));
+            if ((bool)e2Button.IsChecked) checkedButtons.Add(int.Parse(e2Button.Content.ToString()));
+            if ((bool)e3Button.IsChecked) checkedButtons.Add(int.Parse(e3Button.Content.ToString()));
+            if ((bool)e4Button.IsChecked) checkedButtons.Add(int.Parse(e4Button.Content.ToString()));
+            if ((bool)e5Button.IsChecked) checkedButtons.Add(int.Parse(e5Button.Content.ToString()));
+            if ((bool)e6Button.IsChecked) checkedButtons.Add(int.Parse(e6Button.Content.ToString()));
+            if ((bool)e7Button.IsChecked) checkedButtons.Add(int.Parse(e7Button.Content.ToString()));
+            if ((bool)e8Button.IsChecked) checkedButtons.Add(int.Parse(e8Button.Content.ToString()));
+
+            if ((bool)r1Button.IsChecked) checkedButtons.Add(int.Parse(r1Button.Content.ToString()));
+            if ((bool)r2Button.IsChecked) checkedButtons.Add(int.Parse(r2Button.Content.ToString()));
+            if ((bool)r3Button.IsChecked) checkedButtons.Add(int.Parse(r3Button.Content.ToString()));
+            if ((bool)r4Button.IsChecked) checkedButtons.Add(int.Parse(r4Button.Content.ToString()));
+            if ((bool)r5Button.IsChecked) checkedButtons.Add(int.Parse(r5Button.Content.ToString()));
+            if ((bool)r6Button.IsChecked) checkedButtons.Add(int.Parse(r6Button.Content.ToString()));
+            if ((bool)r7Button.IsChecked) checkedButtons.Add(int.Parse(r7Button.Content.ToString()));
+            if ((bool)r8Button.IsChecked) checkedButtons.Add(int.Parse(r8Button.Content.ToString()));
         }
     }
 }
