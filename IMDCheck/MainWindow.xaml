@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:IMDCheck"
     mc:Ignorable="d" FontSize="16"
-    Title="Intermodulation Distortion for FTV" Height="450" Width="800">
+    Title="Intermodulation Distortion for FTV" Height="450" Width="550">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -94,8 +94,9 @@
         <ToggleButton x:Name="r6Button" Grid.Column="7" Grid.Row="6" Margin="10" Content="5843" Click="ToggleButton_Clicked" />
         <ToggleButton x:Name="r7Button" Grid.Column="8" Grid.Row="6" Margin="10" Content="5880" Click="ToggleButton_Clicked" />
         <ToggleButton x:Name="r8Button" Grid.Column="9" Grid.Row="6" Margin="10" Content="5917" Click="ToggleButton_Clicked" />
-        <TextBlock x:Name="troubleFreqs" Grid.ColumnSpan="8" Grid.Column="2" HorizontalAlignment="Left" Margin="13.571,10.143,0,0" Grid.Row="7" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="115" Width="447"/>
-
+        <ScrollViewer x:Name="textScroller" Grid.ColumnSpan="8" Grid.Column="2" HorizontalAlignment="Left" Margin="13.571,10.143,0,0" Grid.Row="7" VerticalScrollBarVisibility="Auto" VerticalAlignment="Top" Height="115" Width="443" HorizontalScrollBarVisibility="Disabled">
+            <TextBlock x:Name="troubleFreqs" Grid.ColumnSpan="8" Grid.Column="2" HorizontalAlignment="Left" Margin="13.571,10.143,0,0" Grid.Row="7" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+        </ScrollViewer>
 
     </Grid>
 </Window>

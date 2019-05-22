@@ -26,12 +26,12 @@ namespace IMDCheck
             InitializeComponent();
         }
 
-        public class FreqSet
+        private class FreqSet
         {
-            public int freq1 { get; set; }
-            public int freq2 { get; set; }
-            public int lowerFreq { get; set; }
-            public int upperFreq { get; set; }
+            public int Freq1 { get; set; }
+            public int Freq2 { get; set; }
+            public int LowerFreq { get; set; }
+            public int UpperFreq { get; set; }
         }
 
         List<int> checkedButtons = new List<int>();
@@ -39,7 +39,7 @@ namespace IMDCheck
 
         private void ToggleButton_Clicked(object sender, RoutedEventArgs e)
         {
-            ToggleButton button = sender as ToggleButton;
+            //ToggleButton button = sender as ToggleButton;
             BuildButtonList();
             CalcInterference();
 
@@ -47,28 +47,34 @@ namespace IMDCheck
 
             foreach (FreqSet freqs in interferedFreq)
             {
-                troubleFreqs.Text += freqs.freq1 + "\t";
-                troubleFreqs.Text += freqs.freq2 + "\t";
-                troubleFreqs.Text += freqs.lowerFreq + "\t";
-                troubleFreqs.Text += freqs.upperFreq + System.Environment.NewLine;
+                troubleFreqs.Text += freqs.Freq1 + "\t";
+                troubleFreqs.Text += freqs.Freq2 + "\t";
+                troubleFreqs.Text += freqs.LowerFreq + "\t";
+                troubleFreqs.Text += freqs.UpperFreq + System.Environment.NewLine;
             }
         }
 
         private void CalcInterference()
         {
             checkedButtons.Sort();
+            List<int> noDupes = checkedButtons.Distinct().ToList();
             interferedFreq.Clear();
 
-            for (int freq = 0; freq < checkedButtons.Count(); freq++)
+            for (int freq = 0; freq < noDupes.Count(); freq++)
             {
-                for (int subSearch = freq; subSearch < checkedButtons.Count() - 1; subSearch++)
+               int freq1 = noDupes[freq];
+
+               for (int subSearch = freq; subSearch < noDupes.Count() - 1; subSearch++)
                 {
-                    int freq1 = checkedButtons[subSearch];
-                    int freq2 = checkedButtons[subSearch + 1];
-                    int differFreq = freq2 - freq1;
-                    int lowerFreq = freq1 - differFreq;
-                    int upperFreq = freq2 + differFreq;
-                    interferedFreq.Add(new FreqSet() { freq1 = freq1, freq2 = freq2, lowerFreq = lowerFreq, upperFreq = upperFreq });
+                    int freq2 = noDupes[subSearch + 1];
+
+                    if (freq1 != freq2)
+                    {
+                        int differFreq = freq2 - freq1;
+                        int lowerFreq = freq1 - differFreq;
+                        int upperFreq = freq2 + differFreq;
+                        interferedFreq.Add(new FreqSet() { Freq1 = freq1, Freq2 = freq2, LowerFreq = lowerFreq, UpperFreq = upperFreq });
+                    }
                 }
             }
         }
